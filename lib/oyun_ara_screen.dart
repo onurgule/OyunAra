@@ -24,7 +24,8 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
   List<PopularFilterListData> online, type, platform;
   RangeValues players;
   List<Game> allGames;
-  Future<http.Response> getGames() async {
+  List<Widget> cardList;
+  String getGames() {
     //https://oyunara.tk/api/getGames.php?platform=1&online=1&player=5&type=5
     var url = "https://oyunara.tk/api/getGames.php?";
     url += "platform=";
@@ -50,25 +51,21 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
       url += (element.isSelected) ? element.value.toString() + "," : '';
     });
     url = (url.endsWith(',')) ? url.substring(0, url.lastIndexOf(',')) : url;
-    print(url);
-    List<Game> games;
-    games = await fetchGames();
-    print(
-        games); //BURADA DEVAMMMM YENİ SAYFADA YANİ BURADA LİSTELENECEK. SONRA ONA BASILDIĞINDA TEKLİ SAYFA, ORADAN İNDİRİLİR:
-    return http.get(url).then((value) => value);
+    print("url geldi");
+    return url;
   }
 
   _FitnessAppHomeScreenState(
       this.online, this.type, this.platform, this.players) {
-    print(getGames());
+    fetchGames();
   }
   AnimationController animationController;
   Future<List<Game>> fetchGames() async {
-    final response = await http.get(
-        'https://oyunara.tk/api/getGames.php?platform=0,2,3,1,4,5&online=1&playermin=3&playermax=6&type=1,7');
-
+    final response = await http.get(getGames());
     List<Game> games = new List<Game>();
     if (response.statusCode == 200) {
+      print("200 döndü");
+
       // If the server did return a 200 OK response,
       // then parse the JSON.
       /*
@@ -102,11 +99,11 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
      });*/
 
       final data = jsonDecode(response.body);
-      print(data);
+      print(data.toString());
+
       for (Map i in data) {
         games.add(Game.fromJson(i));
       }
-      allGames = games;
       return games;
     } else {
       throw Exception('Oyun Bulunamadı.');
@@ -147,30 +144,27 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
       color: FintnessAppTheme.background,
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: FutureBuilder<bool>(
-          future: getData(),
-          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-            if (!snapshot.hasData) {
-              return const SizedBox();
-            } else {
-              return Stack(
-                children: <Widget>[
-                  tabBody,
-                  bottomBar(),
-                ],
-              );
-            }
-          },
-        ),
+        body: FutureBuilder(
+            future: fetchGames(),
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.done:
+                  List<Game> data = snapshot.data;
+                  if (allGames == null) {
+                    allGames = data;
+                  }
+                  return Stack(
+                    children: _getMatchCard(allGames),
+                  );
+                case ConnectionState.waiting:
+                  return Text('bekliyor');
+              }
+            }),
       ),
     );
   }
 
-  Future<bool> getData() async {
-    await Future<dynamic>.delayed(const Duration(milliseconds: 200));
-    return true;
-  }
-
+/*
   Widget bottomBar() {
     return Column(
       children: <Widget>[
@@ -207,5 +201,75 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
         ),
       ],
     );
+  }
+*/
+  List<Widget> _getMatchCard(List<Game> data) {
+    List<Game> cards = new List();
+    print(data.length);
+    cards = data;
+    List<Widget> cardList = new List();
+    for (int x = 0; x < data.length; x++) {
+      cardList.add(Positioned(
+          top: 30,
+          child: Draggable(
+            axis: Axis.horizontal,
+            onDragEnd: (drag) {
+              _removeCard(x);
+              if (drag.offset.direction > 1) {
+                print("left");
+              } else {
+                print("right");
+              }
+            },
+            childWhenDragging: Container(),
+            feedback: Card(
+              elevation: 12,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              child: Container(
+                width: 280,
+                height: 350,
+                child: Expanded(
+                  child: Column(
+                    children: <Widget>[
+                      Image.network(
+                        cards[x].url,
+                        width: 280,
+                        height: 300,
+                      ),
+                      Text(cards[x].title)
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            child: Card(
+              elevation: 12,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              child: Container(
+                width: 280,
+                height: 350,
+                child: Column(
+                  children: <Widget>[
+                    Image.network(
+                      cards[x].url,
+                      width: 280,
+                      height: 300,
+                    ),
+                    Text(cards[x].title)
+                  ],
+                ),
+              ),
+            ),
+          )));
+    }
+    return cardList;
+  }
+
+  void _removeCard(int index) {
+    setState(() {
+      allGames.removeAt(index);
+    });
   }
 }
