@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+
 class Game {
   final int gid;
   final int value;
@@ -9,7 +10,7 @@ class Game {
   final String url;
   final List types;
 
-  Game({this.gid, this.value, this.title,this.desc,this.url, this.types});
+  Game({this.gid, this.value, this.title, this.desc, this.url, this.types});
 
   factory Game.fromJson(Map<String, dynamic> json) {
     //print(json['gid'] + ".."+json[0]['gid']);
@@ -30,6 +31,5 @@ title: $title
 desc: $desc
 url: $url
 types: $types
-''';  
-  
+''';
 }

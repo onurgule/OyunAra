@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:OyunAra/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +13,7 @@ void main() async {
   ]).then((_) => runApp(MyAppHome()));
 }
 
-class MyAppHome extends StatelessWidget {
+class MyAppHome extends StatelessWidget  {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
