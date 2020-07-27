@@ -1,12 +1,12 @@
-import 'package:OyunAra/screens/home_screen.dart';
-import 'package:OyunAra/screens/main2.dart';
+import 'package:OyunAra/splash.dart';
+import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
-import 'package:intro_slider/dot_animation_enum.dart';
+
 import 'package:intro_slider/intro_slider.dart';
 import 'package:intro_slider/slide_object.dart';
 import 'package:localstorage/localstorage.dart';
-
-//import 'package:intro_slider_example/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'routing/router.dart';
 
 void main() => runApp(new MyApp());
 
@@ -14,7 +14,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: IntroScreen(),
+      initialRoute: Routes.SPLASH,
+      onGenerateRoute: Router.generateRoute,
       debugShowCheckedModeBanner: false,
     );
   }
@@ -63,19 +64,20 @@ class IntroScreenState extends State<IntroScreen> {
     );
   }
 
-  void onDonePress() {
+  Future<void> onDonePress() async {
     final LocalStorage storage = new LocalStorage('oyunara_first');
     storage.setItem('launched', '1');
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => MyAppHome()),
-    );
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('onboarding', true);
+
+    Navigator.pushNamed(context, Routes.HOME);
   }
 
   @override
   Widget build(BuildContext context) {
     final LocalStorage storage = new LocalStorage('oyunara_first');
-    var elem = Column();
+    var elem = actionFor(1, context);
     storage.ready
         .then((_) => elem = actionFor(storage.getItem('launched'), context));
     return actionFor(storage.getItem('launched'), context);

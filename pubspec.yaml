@@ -34,6 +34,9 @@ dependencies:
   intl: ^0.16.0
   localstorage: ^3.0.0
   http: ^0.12.2
+  after_layout: ^1.0.7+2
+  shared_preferences: ^0.5.8
+  lottie: ^0.4.1
   
 dev_dependencies:
   flutter_test:

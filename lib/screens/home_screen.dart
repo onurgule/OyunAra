@@ -4,7 +4,6 @@ import 'package:OyunAra/screens/filters_screen.dart';
 import 'package:flutter/material.dart';
 import '../model/homelist.dart';
 import 'package:OyunAra/models/tabIcon_data.dart';
-import 'main2.dart';
 import '../models/tabIcon_data.dart';
 
 class MyHomePage extends StatefulWidget {
