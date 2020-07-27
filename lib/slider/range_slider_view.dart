@@ -1,4 +1,4 @@
-import 'package:OyunAra/hotel_app_theme.dart';
+import 'package:OyunAra/theme/app_theme_slider.dart';
 import 'package:flutter/material.dart';
 
 class RangeSliderView extends StatefulWidget {

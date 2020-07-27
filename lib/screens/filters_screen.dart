@@ -1,10 +1,10 @@
-import 'package:OyunAra/fitness_app_home_screen.dart';
+import 'package:OyunAra/oyun_ara_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'range_slider_view.dart';
-import 'slider_view.dart';
-import 'hotel_app_theme.dart';
-import 'model/popular_filter_list.dart';
+import '../slider/range_slider_view.dart';
+import '../slider/slider_view.dart';
+import '../theme/app_theme_slider.dart';
+import '../model/popular_filter_list.dart';
 
 class FiltersScreen extends StatefulWidget {
   @override
@@ -16,8 +16,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
       PopularFilterListData.popularFList;
   List<PopularFilterListData> accomodationListData =
       PopularFilterListData.accomodationList;
-  List<PopularFilterListData> onlineList =
-      PopularFilterListData.online;
+  List<PopularFilterListData> onlineList = PopularFilterListData.online;
 
   RangeValues _values = const RangeValues(1, 8);
   double distValue = 1;
@@ -80,7 +79,12 @@ class _FiltersScreenState extends State<FiltersScreen> {
                       //Navigator.pop(context);
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => FitnessAppHomeScreen(this.onlineList,this.popularFilterListData,this.accomodationListData,this._values)),
+                        MaterialPageRoute(
+                            builder: (context) => FitnessAppHomeScreen(
+                                this.onlineList,
+                                this.popularFilterListData,
+                                this.accomodationListData,
+                                this._values)),
                       );
                     },
                     child: Center(
@@ -181,7 +185,8 @@ class _FiltersScreenState extends State<FiltersScreen> {
     }
     return noList;
   }
-   Widget allOnlineUI() {
+
+  Widget allOnlineUI() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -293,6 +298,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
       }
     }
   }
+
   void checkAppPositionOn(int index) {
     if (index == 0) {
       if (onlineList[0].isSelected) {
@@ -305,8 +311,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
         });
       }
     } else {
-      onlineList[index].isSelected =
-          !onlineList[index].isSelected;
+      onlineList[index].isSelected = !onlineList[index].isSelected;
 
       int count = 0;
       for (int i = 0; i < onlineList.length; i++) {
@@ -343,7 +348,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
                 fontWeight: FontWeight.normal),
           ),
         ),
-        SliderView( 
+        SliderView(
           distValue: distValue,
           onChangedistValue: (double value) {
             distValue = value;

@@ -1,10 +1,10 @@
 import 'dart:math' as math;
-import 'package:OyunAra/fintness_app_theme.dart';
+import 'package:OyunAra/theme/app_theme_oyun_ara.dart';
 import 'package:OyunAra/models/tabIcon_data.dart';
-import 'package:OyunAra/main2.dart';
+import 'package:OyunAra/screens/main2.dart';
 import 'package:flutter/material.dart';
 
-import '../main2.dart';
+import '../screens/main2.dart';
 import '../models/tabIcon_data.dart';
 
 class BottomBarView extends StatefulWidget {

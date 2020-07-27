@@ -1,4 +1,4 @@
-import 'package:OyunAra/main2.dart';
+import 'package:OyunAra/screens/main2.dart';
 import 'package:flutter/material.dart';
 
 class HotelAppTheme {

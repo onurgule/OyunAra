@@ -1,17 +1,11 @@
-import 'package:OyunAra/app_theme.dart';
-import 'package:OyunAra/bottom_navigation_view/bottom_bar_view.dart';
-import 'package:OyunAra/filters_screen.dart';
-import 'package:OyunAra/training_screen.dart';
-import 'package:OyunAra/my_diary_screen.dart';
+import 'package:OyunAra/theme/app_theme.dart';
+import 'package:OyunAra/bottom_navigation/bottom_bar_view.dart';
+import 'package:OyunAra/screens/filters_screen.dart';
 import 'package:flutter/material.dart';
-import 'model/homelist.dart';
-
-import 'package:OyunAra/fintness_app_theme.dart';
+import '../model/homelist.dart';
 import 'package:OyunAra/models/tabIcon_data.dart';
-import 'package:OyunAra/main2.dart';
-
 import 'main2.dart';
-import 'models/tabIcon_data.dart';
+import '../models/tabIcon_data.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key key}) : super(key: key);
@@ -20,20 +14,19 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
-    List<TabIconData> tabIconsList = TabIconData.tabIconsList;
+  List<TabIconData> tabIconsList = TabIconData.tabIconsList;
 
   HomeList hl = new HomeList();
   List<HomeList> homeList = new List<HomeList>();
   AnimationController animationController;
   bool multiple = true;
 
-  MyDiaryScreen tabBody;
+  // MyDiaryScreen tabBody;
 
   @override
   void initState() {
-     tabIconsList.forEach((TabIconData tab) {
+    tabIconsList.forEach((TabIconData tab) {
       tab.isSelected = false;
     });
     tabIconsList[0].isSelected = true;
@@ -74,7 +67,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   buildExpanded(),
                   bottomBar(),
                 ],
-                
               ),
             );
           }
@@ -85,59 +77,61 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   Expanded buildExpanded() {
     return Expanded(
-                  child: FutureBuilder<bool>(
-                    future: getData(),
-                    builder:
-                        (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                      if (!snapshot.hasData) {
-                        return const SizedBox();
-                      } else {
-                        return (homeList != null) ? GridView(
-                          padding: const EdgeInsets.only(
-                              top: 0, left: 12, right: 12),
-                          physics: const BouncingScrollPhysics(),
-                          scrollDirection: Axis.vertical,
-                          children: List<Widget>.generate(
-                            homeList.length,
-                            (int index) {
-                              final int count = homeList.length;
-                              final Animation<double> animation =
-                                  Tween<double>(begin: 0.0, end: 1.0).animate(
-                                CurvedAnimation(
-                                  parent: animationController,
-                                  curve: Interval((1 / count) * index, 1.0,
-                                      curve: Curves.fastOutSlowIn),
-                                ),
-                              );
-                              animationController.forward();
-                              return HomeListView(
-                                animation: animation,
-                                animationController: animationController,
-                                listData: homeList[index],
-                                callBack: () {
-                                  Navigator.push<dynamic>(
-                                    context,
-                                    MaterialPageRoute<dynamic>(
-                                      builder: (BuildContext context) =>
-                                          homeList[index].navigateScreen,
-                                    ),
-                                  );
-                                },
-                              );
-                            },
+      child: FutureBuilder<bool>(
+        future: getData(),
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          if (!snapshot.hasData) {
+            return const SizedBox();
+          } else {
+            return (homeList != null)
+                ? GridView(
+                    padding: const EdgeInsets.only(top: 0, left: 12, right: 12),
+                    physics: const BouncingScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    children: List<Widget>.generate(
+                      homeList.length,
+                      (int index) {
+                        final int count = homeList.length;
+                        final Animation<double> animation =
+                            Tween<double>(begin: 0.0, end: 1.0).animate(
+                          CurvedAnimation(
+                            parent: animationController,
+                            curve: Interval((1 / count) * index, 1.0,
+                                curve: Curves.fastOutSlowIn),
                           ),
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: multiple ? 2 : 1,
-                            mainAxisSpacing: 12.0,
-                            crossAxisSpacing: 12.0,
-                            childAspectRatio: 1.5,
-                          ),
-                        ):Container(child: Text('Beğenilen Oyun Bulunamadı.'),alignment: Alignment.center,);
-                      }
-                    },
-                  ),
-                );
+                        );
+                        animationController.forward();
+                        return HomeListView(
+                          animation: animation,
+                          animationController: animationController,
+                          listData: homeList[index],
+                          callBack: () {
+                            Navigator.push<dynamic>(
+                              context,
+                              MaterialPageRoute<dynamic>(
+                                builder: (BuildContext context) =>
+                                    homeList[index].navigateScreen,
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: multiple ? 2 : 1,
+                      mainAxisSpacing: 12.0,
+                      crossAxisSpacing: 12.0,
+                      childAspectRatio: 1.5,
+                    ),
+                  )
+                : Container(
+                    child: Text('Beğenilen Oyun Bulunamadı.'),
+                    alignment: Alignment.center,
+                  );
+          }
+        },
+      ),
+    );
   }
 
   Widget appBar() {
@@ -196,45 +190,42 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       ),
     );
   }
+
   Widget bottomBar() {
-    return 
-        BottomBarView(
-          tabIconsList: tabIconsList,
-          addClick: () {
-            return Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FiltersScreen()),
-                );
-          },
-          changeIndex: (int index) {
-            if (index == 0 || index == 2) {
-              animationController.reverse().then<dynamic>((data) {
-                if (!mounted) {
-                  return;
-                }
-                setState(() {
-                  tabBody =
-                      MyDiaryScreen(animationController: animationController,);
-                });
-              });
-            } else if (index == 1 || index == 3) {
-              animationController.reverse().then<dynamic>((data) {
-                if (!mounted) {
-                  return;
-                }
-                setState(() {
-                  tabBody =
-                      TrainingScreen(animationController: animationController) as MyDiaryScreen;
-                });
-              });
-            }
-          },
+    return BottomBarView(
+      tabIconsList: tabIconsList,
+      addClick: () {
+        return Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => FiltersScreen()),
         );
-      
+      },
+      changeIndex: (int index) {
+        if (index == 0 || index == 2) {
+          animationController.reverse().then<dynamic>((data) {
+            if (!mounted) {
+              return;
+            }
+            // setState(() {
+            //   tabBody =
+            //       MyDiaryScreen(animationController: animationController,);
+            // });
+          });
+        } else if (index == 1 || index == 3) {
+          animationController.reverse().then<dynamic>((data) {
+            if (!mounted) {
+              return;
+            }
+            // setState(() {
+            //   tabBody =
+            //       TrainingScreen(animationController: animationController) as MyDiaryScreen;
+            // });
+          });
+        }
+      },
+    );
   }
 }
-
-
 
 class HomeListView extends StatelessWidget {
   const HomeListView(

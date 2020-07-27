@@ -1,8 +1,8 @@
-import 'package:OyunAra/app_theme.dart';
+import 'package:OyunAra/theme/app_theme.dart';
 import 'package:OyunAra/drawer_user_controller.dart';
-import 'package:OyunAra/filters_screen.dart';
+import 'package:OyunAra/screens/filters_screen.dart';
 import 'package:OyunAra/home_drawer.dart';
-import 'package:OyunAra/home_screen.dart';
+import 'package:OyunAra/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class NavigationHomeScreen extends StatefulWidget {
@@ -54,7 +54,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
         });
       } else if (drawerIndex == DrawerIndex.FeedBack) {
         setState(() {
-         // screenView = FeedbackScreen();
+          // screenView = FeedbackScreen();
         });
       } else if (drawerIndex == DrawerIndex.Invite) {
         setState(() {
