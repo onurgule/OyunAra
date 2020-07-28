@@ -18,10 +18,10 @@ class SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
 
     if (_seen) {
       Timer(Duration(seconds: 4),
-          () => Navigator.pushNamed(context, Routes.HOME, arguments: "Onboarding isSeen? : True"));
+          () => Navigator.popAndPushNamed(context, Routes.HOME, arguments: "Onboarding isSeen? : True"));
     } else {
       Timer(Duration(seconds: 4),
-          () => Navigator.pushNamed(context, Routes.ONBOARDING,arguments: "Onboarding isSeen? : False"));
+          () => Navigator.popAndPushNamed(context, Routes.ONBOARDING,arguments: "Onboarding isSeen? : False"));
     }
   }
 

@@ -1,5 +1,4 @@
 import 'package:OyunAra/main.dart';
-import 'package:OyunAra/screens/filters_screen.dart';
 import 'package:OyunAra/screens/home_screen.dart';
 import 'package:OyunAra/screens/main2.dart';
 import 'package:OyunAra/splash.dart';
@@ -9,7 +8,7 @@ class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case Routes.INITIAL_ROUTE:
-        return MaterialPageRoute(builder: (_) => IntroScreen());
+        return MaterialPageRoute(builder: (_) => MyAppHome());
       case Routes.SPLASH:
         return MaterialPageRoute(builder: (_) => Splash());
       case Routes.ONBOARDING:

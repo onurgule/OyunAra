@@ -71,7 +71,7 @@ class IntroScreenState extends State<IntroScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboarding', true);
 
-    Navigator.pushNamed(context, Routes.HOME);
+    Navigator.popAndPushNamed(context, Routes.HOME);
   }
 
   @override

@@ -1,11 +1,11 @@
 import 'package:OyunAra/screens/oyun_ara_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../slider/range_slider_view.dart';
 import '../slider/slider_view.dart';
 import '../theme/app_theme_slider.dart';
 import '../model/popular_filter_list.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class FiltersScreen extends StatefulWidget {
   @override
