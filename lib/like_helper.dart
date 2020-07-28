@@ -12,11 +12,6 @@ class LikedHelper {
     prefs.setString('$_key', _json);
   }
 
-  delJson(String _key) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.remove('$_key');
-  }
-
   getAllData() async {
     final prefs = await SharedPreferences.getInstance();
     final keys = prefs.getKeys();
@@ -25,7 +20,5 @@ class LikedHelper {
     for (String key in keys) {
       prefsMap[key] = prefs.get(key);
     }
-
-    //print("sonuc" + prefsMap);
   }
 }
