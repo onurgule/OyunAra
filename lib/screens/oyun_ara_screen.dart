@@ -8,10 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:OyunAra/theme/app_theme.dart';
 
 import 'package:flutter/material.dart';
-import 'bottom_navigation/bottom_bar_view.dart';
+import '../bottom_navigation/bottom_bar_view.dart';
 
-import 'model/game.dart';
-import 'theme/app_theme_oyun_ara.dart';
+import '../model/game.dart';
+import '../theme/app_theme_oyun_ara.dart';
 // import 'my_diary_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
