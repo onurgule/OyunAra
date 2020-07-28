@@ -150,7 +150,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
               } else {
                 print("right" + x.toString());
                 //saveData(cards[x]);
-                _launchURL(cards[x].url);
+                _launchURL(cards[x].link);
               }
               _removeCard(x);
             },
