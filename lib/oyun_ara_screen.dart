@@ -17,6 +17,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:OyunAra/services/url_generate.dart';
 
 class FitnessAppHomeScreen extends StatefulWidget {
   List<PopularFilterListData> online, type, platform;
@@ -33,41 +34,14 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
   RangeValues players;
   List<Game> games = new List<Game>();
   List<Widget> cardList;
-  String getGames() {
-    //https://oyunara.tk/api/getGames.php?platform=1&online=1&player=5&type=5
-    var url = "https://oyunara.tk/api/getGames.php?";
-    url += "platform=";
-    platform.forEach((element) {
-      url += (element.isSelected) ? element.value.toString() + "," : '';
-    });
-    url = (url.endsWith(',')) ? url.substring(0, url.lastIndexOf(',')) : url;
-
-    url += "&online=";
-    online.forEach((element) {
-      url += (element.isSelected) ? '1' + "," : '0';
-    });
-    url = (url.endsWith(',')) ? url.substring(0, url.lastIndexOf(',')) : url;
-
-    url += "&playermin=" +
-        players.start.toInt().toString() +
-        "&playermax=" +
-        players.end.toInt().toString();
-    url = (url.endsWith(',')) ? url.substring(0, url.lastIndexOf(',')) : url;
-
-    url += "&type=";
-    type.forEach((element) {
-      url += (element.isSelected) ? element.value.toString() + "," : '';
-    });
-    url = (url.endsWith(',')) ? url.substring(0, url.lastIndexOf(',')) : url;
-    return url;
-  }
 
   _FitnessAppHomeScreenState(
       this.online, this.type, this.platform, this.players) {}
   AnimationController animationController;
 
   Future<String> fetchGames() async {
-    var response = await http.get(getGames());
+    var response =
+        await http.get(UrlGenerate().getGames(online, type, platform, players));
     if (response.statusCode == 200) {
       print("200 döndü");
 
