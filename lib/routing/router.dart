@@ -1,4 +1,5 @@
 import 'package:OyunAra/main.dart';
+import 'package:OyunAra/screens/filters_screen.dart';
 import 'package:OyunAra/screens/home_screen.dart';
 import 'package:OyunAra/screens/main2.dart';
 import 'package:OyunAra/splash.dart';
@@ -15,6 +16,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => IntroScreen());
       case Routes.HOME:
         return MaterialPageRoute(builder: (_) => MyAppHome());
+      case Routes.FILTER_SCREEN:
+        return MaterialPageRoute(builder: (_) => FiltersScreen());
       case Routes.ERROR:
         return MaterialPageRoute(builder: (_) => MyHomePage());
 
@@ -35,5 +38,6 @@ class Routes {
   static const String HOME = "/mainPage";
   static const String SPLASH = "/splash";
   static const String ONBOARDING = "/onboarding";
-  static const String ERROR = "/errorPage";
+  static const String FILTER_SCREEN = "/filter";
+    static const String ERROR = "/errorPage";
 }

@@ -464,7 +464,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
             'Kaç Kişilik?',
             textAlign: TextAlign.left,
             style: TextStyle(
-                color: Colors.grey,
+                color: Colors.blueAccent,
                 fontSize: MediaQuery.of(context).size.width > 360 ? 18 : 16,
                 fontWeight: FontWeight.normal),
           ),

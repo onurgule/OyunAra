@@ -3,12 +3,7 @@ import 'dart:convert';
 import 'package:OyunAra/model/game.dart';
 import 'package:OyunAra/model/popular_filter_list.dart';
 import 'package:OyunAra/models/tabIcon_data.dart';
-import 'package:OyunAra/screens/webview_screen.dart';
-import 'package:OyunAra/theme/app_theme.dart';
-
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'bottom_navigation/bottom_bar_view.dart';
 import 'model/game.dart';
 import 'theme/app_theme_oyun_ara.dart';
 // import 'my_diary_screen.dart';

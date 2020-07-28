@@ -1,6 +1,6 @@
+import 'package:OyunAra/routing/router.dart';
 import 'package:OyunAra/theme/app_theme.dart';
 import 'package:OyunAra/bottom_navigation/bottom_bar_view.dart';
-import 'package:OyunAra/screens/filters_screen.dart';
 import 'package:flutter/material.dart';
 import '../model/homelist.dart';
 import 'package:OyunAra/models/tabIcon_data.dart';
@@ -194,10 +194,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     return BottomBarView(
       tabIconsList: tabIconsList,
       addClick: () {
-        return Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => FiltersScreen()),
-        );
+        return Navigator.pushNamed(context, Routes.FILTER_SCREEN);
       },
       changeIndex: (int index) {
         if (index == 0 || index == 2) {

@@ -12,6 +12,8 @@ class Game {
 
   Game({this.gid, this.value, this.title, this.desc, this.url, this.types});
 
+  
+
   factory Game.fromJson(Map<String, dynamic> json) {
     //print(json['gid'] + ".."+json[0]['gid']);
     return Game(

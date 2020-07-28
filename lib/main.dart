@@ -1,5 +1,3 @@
-import 'package:OyunAra/splash.dart';
-import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intro_slider/intro_slider.dart';
@@ -57,7 +55,7 @@ class IntroScreenState extends State<IntroScreen> {
       new Slide(
         title: "Kaç Kişisiniz?",
         description:
-            "Tam 5 kişi oyun oynarken bir arkadaşınızın işi çıkıp 4 kişiye düştüğünüzde oyunsuz kalmayın!",
+            "Tam 5 kişisiniz ve 4 kişiye düştünüz :(( üzülmeyin size uygun da oyunlarımız var!",
         pathImage: "images/lol.png",
         backgroundColor: Color(0xff9932CC),
       ),
@@ -65,8 +63,10 @@ class IntroScreenState extends State<IntroScreen> {
   }
 
   Future<void> onDonePress() async {
+    /*
     final LocalStorage storage = new LocalStorage('oyunara_first');
     storage.setItem('launched', '1');
+    */
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboarding', true);

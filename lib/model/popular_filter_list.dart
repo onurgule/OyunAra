@@ -10,7 +10,6 @@ class PopularFilterListData {
   }){
     switch(this.opt){
       case "p":
-      
       break;
       case "pr":
       break;

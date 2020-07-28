@@ -6,7 +6,8 @@ class Category {
     this.money = 0,
     this.rating = 0.0,
   });
-
+  String test;
+  String test2;
   String title;
   int lessonCount;
   int money;
