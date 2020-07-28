@@ -5,11 +5,6 @@ import 'package:OyunAra/model/popular_filter_list.dart';
 import 'package:OyunAra/models/tabIcon_data.dart';
 
 import 'package:flutter/material.dart';
-import 'package:OyunAra/theme/app_theme.dart';
-
-import 'package:flutter/material.dart';
-import '../bottom_navigation/bottom_bar_view.dart';
-
 import '../model/game.dart';
 import '../theme/app_theme_oyun_ara.dart';
 // import 'my_diary_screen.dart';
@@ -83,17 +78,21 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
       appBar: AppBar(
         title: Text('Sonuçlar'),
       ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            AspectRatio(
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            flex: 3,
+                      child: AspectRatio(
               aspectRatio: 0.7,
               child: Stack(
                 alignment: Alignment.center,
                 children: _getMatchCard(games),
               ),
             ),
-            AspectRatio(
+          ),
+          Expanded(
+            flex: 1,
+                      child: AspectRatio(
               aspectRatio: 2.5,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -110,9 +109,9 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
                   )
                 ],
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
