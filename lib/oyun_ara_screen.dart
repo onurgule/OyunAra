@@ -3,11 +3,9 @@ import 'dart:convert';
 import 'package:OyunAra/model/game.dart';
 import 'package:OyunAra/model/popular_filter_list.dart';
 import 'package:OyunAra/models/tabIcon_data.dart';
-import 'package:OyunAra/screens/webview_screen.dart';
 import 'package:OyunAra/theme/app_theme.dart';
 
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import 'bottom_navigation/bottom_bar_view.dart';
 import 'model/game.dart';
 import 'theme/app_theme_oyun_ara.dart';
@@ -192,17 +190,16 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
           child: Draggable(
             axis: Axis.horizontal,
             onDragEnd: (drag) {
-              _removeCard(x);
-//DÜZENLENECEK
               if (drag.offset.direction > 1) {
                 print("left");
 
                 saveData(cards[x].title);
               } else {
-                print("right");
+                print("right" + x.toString());
 
-                _launchURL(cards[0].url);
+                _launchURL(cards[x].url);
               }
+              _removeCard(x);
             },
             childWhenDragging: Container(),
             feedback: Cards(context: context, cards: cards, x: x),
@@ -261,16 +258,19 @@ class Cards extends StatelessWidget {
         child: Expanded(
           child: Column(
             children: <Widget>[
+              Spacer(),
               Image.network(
                 cards[x].url,
                 width: 280,
-                height: 300,
+                height: 400,
                 fit: BoxFit.fill,
               ),
+              Spacer(),
               Text(
                 cards[x].title,
                 style: TextStyle(fontSize: 30),
-              )
+              ),
+              Spacer(),
             ],
           ),
         ),
