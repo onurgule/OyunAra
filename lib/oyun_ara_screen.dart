@@ -3,12 +3,19 @@ import 'dart:convert';
 import 'package:OyunAra/model/game.dart';
 import 'package:OyunAra/model/popular_filter_list.dart';
 import 'package:OyunAra/models/tabIcon_data.dart';
+import 'package:OyunAra/screens/webview_screen.dart';
+import 'package:OyunAra/theme/app_theme.dart';
 
 import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'bottom_navigation/bottom_bar_view.dart';
+import 'model/game.dart';
 import 'theme/app_theme_oyun_ara.dart';
 // import 'my_diary_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FitnessAppHomeScreen extends StatefulWidget {
   List<PopularFilterListData> online, type, platform;
@@ -23,7 +30,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
     with TickerProviderStateMixin {
   List<PopularFilterListData> online, type, platform;
   RangeValues players;
-  List<Game> allGames;
+  List<Game> games = new List<Game>();
   List<Widget> cardList;
   String getGames() {
     //https://oyunara.tk/api/getGames.php?platform=1&online=1&player=5&type=5
@@ -51,60 +58,28 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
       url += (element.isSelected) ? element.value.toString() + "," : '';
     });
     url = (url.endsWith(',')) ? url.substring(0, url.lastIndexOf(',')) : url;
-    print("url geldi");
     return url;
   }
 
   _FitnessAppHomeScreenState(
-      this.online, this.type, this.platform, this.players) {
-    fetchGames();
-  }
+      this.online, this.type, this.platform, this.players) {}
   AnimationController animationController;
-  Future<List<Game>> fetchGames() async {
-    final response = await http.get(getGames());
-    List<Game> games = new List<Game>();
+
+  Future<String> fetchGames() async {
+    var response = await http.get(getGames());
     if (response.statusCode == 200) {
       print("200 döndü");
 
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      /*
-     Map<String,dynamic> arr = json.decode(response.body);
-     print(json.decode(response.body)[0]);
-     print(json.decode(response.body)[1]);
-     Game gm;
-     int gid, value=0;
-     String title, desc, url, types;
-       arr.forEach((key, value) {
-       switch (key) {
-         case 'GID':
-          print(value);
-           gid = int.parse(value);
-           break;
-         case 'Name':
-           title = value;
-           break;
-         case 'Description':
-           desc = value;
-           print(desc);
-           break;
-         case 'Type':
-           types = value;
-           print(value);
-           gm = new Game(gid: gid, title: title);
-           print(value);
-           games.add(gm);
-       }
-       print(games.toString());
-     });*/
+      this.setState(() {
+        final data = jsonDecode(response.body);
+        print(data.toString());
+        for (Map i in data) {
+          games.add(Game.fromJson(i));
+        }
+      });
 
-      final data = jsonDecode(response.body);
-      print(data.toString());
-
-      for (Map i in data) {
-        games.add(Game.fromJson(i));
-      }
-      return games;
+      print(games[0].title);
+      return "games";
     } else {
       throw Exception('Oyun Bulunamadı.');
     }
@@ -118,18 +93,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
 
   @override
   void initState() {
-    tabIconsList.forEach((TabIconData tab) {
-      tab.isSelected = false;
-    });
-    tabIconsList[0].isSelected = true;
-
-    animationController = AnimationController(
-        duration: const Duration(milliseconds: 600), vsync: this);
-    // tabBody = MyDiaryScreen(
-    //   animationController: animationController,
-    //   games: this.allGames,
-    // );
-    super.initState();
+    this.fetchGames();
   }
 
   @override
@@ -140,26 +104,40 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: FintnessAppTheme.background,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: FutureBuilder(
-            future: fetchGames(),
-            builder: (context, snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.done:
-                  List<Game> data = snapshot.data;
-                  if (allGames == null) {
-                    allGames = data;
-                  }
-                  return Stack(
-                    children: _getMatchCard(allGames),
-                  );
-                case ConnectionState.waiting:
-                  return Text('bekliyor');
-              }
-            }),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Sonuçlar'),
+      ),
+      body: Center(
+        child: Column(
+          children: <Widget>[
+            AspectRatio(
+              aspectRatio: 0.7,
+              child: Stack(
+                alignment: Alignment.center,
+                children: _getMatchCard(games),
+              ),
+            ),
+            AspectRatio(
+              aspectRatio: 2.5,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Icon(
+                    Icons.favorite,
+                    color: Colors.red,
+                    size: 100,
+                  ),
+                  Icon(
+                    Icons.file_download,
+                    color: Colors.black,
+                    size: 100,
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -215,61 +193,88 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
             axis: Axis.horizontal,
             onDragEnd: (drag) {
               _removeCard(x);
+//DÜZENLENECEK
               if (drag.offset.direction > 1) {
                 print("left");
+
+                saveData(cards[x].title);
               } else {
                 print("right");
+
+                _launchURL(cards[0].url);
               }
             },
             childWhenDragging: Container(),
-            feedback: Card(
-              elevation: 12,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              child: Container(
-                width: 280,
-                height: 350,
-                child: Expanded(
-                  child: Column(
-                    children: <Widget>[
-                      Image.network(
-                        cards[x].url,
-                        width: 280,
-                        height: 300,
-                      ),
-                      Text(cards[x].title)
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            child: Card(
-              elevation: 12,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              child: Container(
-                width: 280,
-                height: 350,
-                child: Column(
-                  children: <Widget>[
-                    Image.network(
-                      cards[x].url,
-                      width: 280,
-                      height: 300,
-                    ),
-                    Text(cards[x].title)
-                  ],
-                ),
-              ),
-            ),
+            feedback: Cards(context: context, cards: cards, x: x),
+            child: Cards(context: context, cards: cards, x: x),
           )));
     }
     return cardList;
   }
 
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   void _removeCard(int index) {
     setState(() {
-      allGames.removeAt(index);
+      games.removeAt(index);
     });
+  }
+
+  Future<bool> saveData(String name) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.setString("title", name);
+  }
+
+  Future<String> getData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString("name").isEmpty ? "hata" : prefs.getString("name");
+  }
+}
+
+class Cards extends StatelessWidget {
+  const Cards({
+    Key key,
+    @required this.context,
+    @required this.cards,
+    @required this.x,
+  }) : super(key: key);
+
+  final BuildContext context;
+  final List<Game> cards;
+  final int x;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 12,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.65,
+        height: MediaQuery.of(context).size.width * 1,
+        child: Expanded(
+          child: Column(
+            children: <Widget>[
+              Image.network(
+                cards[x].url,
+                width: 280,
+                height: 300,
+                fit: BoxFit.fill,
+              ),
+              Text(
+                cards[x].title,
+                style: TextStyle(fontSize: 30),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
