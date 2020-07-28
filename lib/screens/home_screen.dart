@@ -1,4 +1,3 @@
-
 import 'package:OyunAra/theme/app_theme.dart';
 import 'package:OyunAra/bottom_navigation/bottom_bar_view.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +5,10 @@ import '../model/homelist.dart';
 import 'package:OyunAra/models/tabIcon_data.dart';
 import '../models/tabIcon_data.dart';
 import 'filters_screen.dart';
+import 'package:OyunAra/model/category_model.dart';
+import 'package:http/http.dart' as http;
+import 'package:OyunAra/services/url_generate.dart';
+import 'dart:convert';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key key}) : super(key: key);
@@ -16,7 +19,23 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
-
+  List<CategoryModel> categories = new List<CategoryModel>();
+  List<Color> colorList = [
+    Colors.yellow,
+    Colors.pink,
+    Colors.red,
+    Colors.orange,
+    Colors.lime,
+    Colors.lightBlue,
+    Colors.lightGreen,
+    Colors.teal,
+    Colors.cyan,
+    Colors.indigo,
+    Colors.purple,
+    Colors.blueGrey,
+    Colors.brown,
+    Colors.black
+  ];
   HomeList hl = new HomeList();
   List<HomeList> homeList = new List<HomeList>();
   AnimationController animationController;
@@ -32,7 +51,28 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     tabIconsList[0].isSelected = true;
     animationController = AnimationController(
         duration: const Duration(milliseconds: 2000), vsync: this);
+    this.fetchGames();
     super.initState();
+  }
+
+  Future<String> fetchGames() async {
+    var response = await http.get(UrlGenerate().getAllCategories());
+    if (response.statusCode == 200) {
+      print("200 döndü");
+
+      this.setState(() {
+        final data = jsonDecode(response.body);
+        print(data.toString());
+        for (Map i in data) {
+          categories.add(CategoryModel.fromJson(i));
+        }
+      });
+
+      print(categories[0].name);
+      return "categories";
+    } else {
+      throw Exception('Kategori Bulunamadı.');
+    }
   }
 
   Future<bool> getData() async {
