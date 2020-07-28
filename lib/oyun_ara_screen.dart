@@ -1,14 +1,11 @@
-import 'dart:convert'
+import 'dart:convert';
+
 import 'package:OyunAra/model/game.dart';
 import 'package:OyunAra/model/popular_filter_list.dart';
 import 'package:OyunAra/models/tabIcon_data.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter/material.dart';
-import '../bottom_navigation/bottom_bar_view.dart';
-import '../model/game.dart';
-import '../theme/app_theme_oyun_ara.dart';
-// import 'my_diary_screen.dart';
+import 'model/game.dart';
+import 'theme/app_theme_oyun_ara.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -78,40 +75,20 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
       appBar: AppBar(
         title: Text('Sonuçlar'),
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            flex: 3,
-                      child: AspectRatio(
+      body: Center(
+        child: Flexible(
+          child:Column(
+          children: <Widget>[
+            AspectRatio(
               aspectRatio: 0.7,
               child: Stack(
                 alignment: Alignment.center,
                 children: _getMatchCard(games),
               ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-                      child: AspectRatio(
-              aspectRatio: 2.5,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                    size: 100,
-                  ),
-                  Icon(
-                    Icons.file_download,
-                    color: Colors.black,
-                    size: 100,
-                  )
-                ],
-              ),
-            ),
-          )
-        ],
+            Text("Beğendiklerinize sağa atarak ulaşabilirsiniz!"),
+          ],
+        )),
       ),
     );
   }
@@ -173,8 +150,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
               } else {
                 print("right" + x.toString());
                 //saveData(cards[x]);
-				        print(cards[x].link);
-                _launchURL(cards[x].link);
+                _launchURL(cards[x].url);
               }
               _removeCard(x);
             },

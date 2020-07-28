@@ -1,4 +1,3 @@
-//TEST---Not using---TEST
 class MealsListData {
   MealsListData({
     this.imagePath = '',
