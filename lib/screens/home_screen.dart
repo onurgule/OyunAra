@@ -9,6 +9,7 @@ import 'package:OyunAra/model/category_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:OyunAra/services/url_generate.dart';
 import 'dart:convert';
+import 'dart:math';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key key}) : super(key: key);
@@ -165,7 +166,68 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                     ),
                   )
                 : Container(
-                    child: Text('Beğenilen Oyun Bulunamadı.'),
+                    height: MediaQuery.of(context).size.height * 0.50,
+                    child: Column(
+                      children: <Widget>[
+                        Expanded(
+                            flex: 2,
+                            child: Container(
+                              margin: const EdgeInsets.only(
+                                left: 20.0,
+                                top: 20,
+                              ),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Tüm Kategoriler',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 35,
+                                  ),
+                                ),
+                              ),
+                            )),
+                        Expanded(
+                          flex: 4,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: categories.length,
+                            padding: EdgeInsets.symmetric(vertical: 16.0),
+                            itemBuilder: (BuildContext context, int index) {
+                              return Card(
+                                elevation: 15,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(colors: [
+                                    colorRandom(),
+                                    colorRandom()
+                                  ])),
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.60,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    categories[index].name.toUpperCase(),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 30,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        Expanded(
+                            flex: 9,
+                            child: Text(
+                              'BEĞENİLEN OYUNLAR GELECEK',
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 25),
+                            ))
+                      ],
+                    ),
                     alignment: Alignment.center,
                   );
           }
@@ -264,6 +326,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         }
       },
     );
+  }
+
+  Color colorRandom() {
+    Random random = new Random();
+    return colorList[random.nextInt(colorList.length)];
   }
 }
 
