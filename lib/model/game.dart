@@ -8,9 +8,10 @@ class Game {
   final String title;
   final String desc;
   final String url;
+  final String link;
   final List types;
 
-  Game({this.gid, this.value, this.title, this.desc, this.url, this.types});
+  Game({this.gid, this.value, this.title, this.desc, this.url, this.link, this.types});
 
   
 
@@ -22,8 +23,19 @@ class Game {
       title: json['Name'],
       desc: json['Description'],
       url: json['URL'],
-      types: new List.filled(1, json['types']),
+      link: json['Link'],
+      types: new List.filled(1, json['Type']),
     );
+  }
+   Map<String, dynamic> toJson() {
+    return {
+      'gid': gid,
+      'title': title,
+      'desc' : desc,
+      'url'  : url,
+      'types': jsonEncode((types).toList()),
+      'link' : link
+    };
   }
   @override
   String toString() => '''

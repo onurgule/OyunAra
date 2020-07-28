@@ -26,7 +26,7 @@ class PopularFilterListData {
   static List<PopularFilterListData> popularFList = <PopularFilterListData>[
     PopularFilterListData(
       titleTxt: 'Aksiyon',
-      isSelected: false,
+      isSelected: true,
       value: 1
     ),
     PopularFilterListData(
@@ -104,7 +104,7 @@ class PopularFilterListData {
     ),
     PopularFilterListData(
       titleTxt: 'PC',
-      isSelected: false,
+      isSelected: true,
       value: 1
     ),
     PopularFilterListData(
@@ -121,7 +121,7 @@ class PopularFilterListData {
   static List<PopularFilterListData> online = [
     PopularFilterListData(
       titleTxt: 'Online',
-      isSelected: false,
+      isSelected: true,
     ),
   ];
 }

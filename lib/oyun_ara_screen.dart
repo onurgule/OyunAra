@@ -3,18 +3,10 @@ import 'dart:convert';
 import 'package:OyunAra/model/game.dart';
 import 'package:OyunAra/model/popular_filter_list.dart';
 import 'package:OyunAra/models/tabIcon_data.dart';
-
 import 'package:flutter/material.dart';
-import 'package:OyunAra/theme/app_theme.dart';
-
-import 'package:flutter/material.dart';
-import 'bottom_navigation/bottom_bar_view.dart';
-
 import 'model/game.dart';
 import 'theme/app_theme_oyun_ara.dart';
-// import 'my_diary_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:OyunAra/services/url_generate.dart';
@@ -67,7 +59,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
   );
 
   @override
-  void initState() {
+  Future<void> initState() {
     this.fetchGames();
   }
 
@@ -84,7 +76,8 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
         title: Text('Sonuçlar'),
       ),
       body: Center(
-        child: Column(
+        child: Flexible(
+          child:Column(
           children: <Widget>[
             AspectRatio(
               aspectRatio: 0.7,
@@ -93,26 +86,9 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
                 children: _getMatchCard(games),
               ),
             ),
-            AspectRatio(
-              aspectRatio: 2.5,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                    size: 100,
-                  ),
-                  Icon(
-                    Icons.file_download,
-                    color: Colors.black,
-                    size: 100,
-                  )
-                ],
-              ),
-            )
+            Text("Beğendiklerinize sağa atarak ulaşabilirsiniz!"),
           ],
-        ),
+        )),
       ),
     );
   }
@@ -168,12 +144,12 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
             axis: Axis.horizontal,
             onDragEnd: (drag) {
               if (drag.offset.direction > 1) {
-                print("left");
+                print("left - beğenilmedi");
 
-                saveData(cards[x].title);
+               // saveData(cards[x].title);
               } else {
                 print("right" + x.toString());
-
+                //saveData(cards[x]);
                 _launchURL(cards[x].url);
               }
               _removeCard(x);
@@ -200,15 +176,38 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
     });
   }
 
-  Future<bool> saveData(String name) async {
+  Future<bool> saveData(Game newLike) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    return prefs.setString("title", name);
+    var likesList = prefs.getString("likes") == null ? null : prefs.getString("likes");
+    print(newLike);
+    if(likesList == null){
+      //Hiç beğenisi yoksa yeni liste oluşsun ve kaydedilsin.
+      List<Game> likedGames = new List<Game>();
+      Game likedGame = newLike;
+      likedGames.add(likedGame);
+      prefs.setString("likes",jsonEncode((likedGames)));
+    }
+    else{
+      //Daha önce beğenisi varsa o liste alınıp, o listeye yeni oyun eklenip kaydedilsin.
+      List<Game> likedGames = new List<Game>();
+      print(likesList);
+      var data = jsonDecode(likesList);
+      for (Map<String,dynamic> i in data) {
+      print(i);
+      print(Game.fromJson(i)); //HATA BURADA
+          likedGames.add(Game.fromJson(i));
+      }
+      Game likedGame = newLike;
+      likedGames.add(likedGame);
+      prefs.setString("likes",jsonEncode((likedGames)));
+      print(json.encode(likedGames));
+    }
+    return true;
   }
 
   Future<String> getData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString("name").isEmpty ? "hata" : prefs.getString("name");
+    return prefs.getString("likes").isEmpty ? null : prefs.getString("likes");
   }
 }
 

@@ -1,6 +1,8 @@
+import 'package:OyunAra/model/game.dart';
 import 'package:OyunAra/theme/app_theme.dart';
 import 'package:OyunAra/bottom_navigation/bottom_bar_view.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../model/homelist.dart';
 import 'package:OyunAra/models/tabIcon_data.dart';
 import '../models/tabIcon_data.dart';
@@ -21,6 +23,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   List<TabIconData> tabIconsList = TabIconData.tabIconsList;
   List<CategoryModel> categories = new List<CategoryModel>();
+  List<Game> games = new List<Game>();
   List<Color> colorList = [
     Colors.yellow,
     Colors.pink,
@@ -53,6 +56,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     animationController = AnimationController(
         duration: const Duration(milliseconds: 2000), vsync: this);
     this.fetchGames();
+
+    fetchAllGames();
     super.initState();
   }
 
@@ -73,6 +78,25 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       return "categories";
     } else {
       throw Exception('Kategori Bulunamadı.');
+    }
+  }
+   Future<String> fetchAllGames() async {
+    var response = await http.get(UrlGenerate().getAllGames());
+    if (response.statusCode == 200) {
+      print("200 döndü");
+
+      this.setState(() {
+        final data = jsonDecode(response.body);
+        print(data.toString());
+        for (Map i in data) {
+          games.add(Game.fromJson(i));
+        }
+      });
+
+      print(games[0].title);
+      return "games";
+    } else {
+      throw Exception('Oyun Bulunamadı.');
     }
   }
 
@@ -115,8 +139,24 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       ),
     );
   }
-
+  
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
   Expanded buildExpanded() {
+
+    final Animation<double> animation =
+                                    Tween<double>(begin: 0.0, end: 1.0).animate(
+                                  CurvedAnimation(
+                                    parent: animationController,
+                                    curve: Interval((1 / (games.length+1)), 1.0,
+                                        curve: Curves.fastOutSlowIn),
+                                  ),
+                                );
     return Expanded(
       child: FutureBuilder<bool>(
         future: getData(),
@@ -220,12 +260,61 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           ),
                         ),
                         Expanded(
+                            flex: 2,
+                            child: Container(
+                              margin: const EdgeInsets.only(
+                                left: 20.0,
+                                top: 20,
+                              ),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'En Beğenilenler',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 35,
+                                  ),
+                                ),
+                              ),
+                            )),
+                        Expanded(
                             flex: 9,
-                            child: Text(
-                              'BEĞENİLEN OYUNLAR GELECEK',
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 25),
-                            ))
+                            child: ListView.builder(
+
+                            scrollDirection: Axis.horizontal,
+                            itemCount: games.length,
+                            padding: EdgeInsets.symmetric(vertical: 16.0),
+                            itemBuilder: (BuildContext context, int index) {
+                              return Card(
+                                elevation: 15,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: RaisedButton(
+                                  onPressed: () =>   _launchURL(games[index].link),
+                                  child: Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(games[index].url),
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.60,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    games[index].title,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 30,
+                                    ),
+                                  ),
+                                ),
+                                )
+                                  
+                              );
+                            },
+                          ),
+                          )
                       ],
                     ),
                     alignment: Alignment.center,
