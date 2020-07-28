@@ -34,6 +34,7 @@ class UrlGenerate {
     url = (url.endsWith(',')) ? url.substring(0, url.lastIndexOf(',')) : url;
     return url;
   }
+
   String getAllGames() {
     //https://oyunara.tk/api/getGames.php?platform=1&online=1&player=5&type=5
     var url = "https://oyunara.tk/api/getAllGames.php";
@@ -42,5 +43,9 @@ class UrlGenerate {
 
   String getAllCategories() {
     return "https://oyunara.tk/api/getOptions.php?opt=t";
+  }
+
+  String getItemCategory(int tid) {
+    return "https://oyunara.tk/api/getOptions.php?opt=mr&tid=${tid}";
   }
 }
