@@ -2,7 +2,7 @@ import 'package:OyunAra/main.dart';
 import 'package:OyunAra/screens/filters_screen.dart';
 import 'package:OyunAra/screens/home_screen.dart';
 import 'package:OyunAra/screens/main2.dart';
-import 'package:OyunAra/splash.dart';
+import 'package:OyunAra/screens/splash.dart';
 import 'package:flutter/material.dart';
 
 class Router {
