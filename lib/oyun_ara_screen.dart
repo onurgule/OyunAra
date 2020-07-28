@@ -174,7 +174,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
               } else {
                 print("right" + x.toString());
 
-                _launchURL(cards[x].url);
+                _launchURL(cards[x].gameUrl);
               }
               _removeCard(x);
             },
@@ -204,11 +204,6 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.setString("title", name);
-  }
-
-  Future<String> getData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString("name").isEmpty ? "hata" : prefs.getString("name");
   }
 }
 

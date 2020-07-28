@@ -9,10 +9,16 @@ class Game {
   final String desc;
   final String url;
   final List types;
+  final String gameUrl;
 
-  Game({this.gid, this.value, this.title, this.desc, this.url, this.types});
-
-  
+  Game(
+      {this.gid,
+      this.value,
+      this.title,
+      this.desc,
+      this.url,
+      this.types,
+      this.gameUrl});
 
   factory Game.fromJson(Map<String, dynamic> json) {
     //print(json['gid'] + ".."+json[0]['gid']);
@@ -23,6 +29,7 @@ class Game {
       desc: json['Description'],
       url: json['URL'],
       types: new List.filled(1, json['types']),
+      gameUrl: json['Link'],
     );
   }
   @override
@@ -33,5 +40,6 @@ title: $title
 desc: $desc
 url: $url
 types: $types
+gameUrl:$gameUrl
 ''';
 }
