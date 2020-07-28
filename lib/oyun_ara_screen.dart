@@ -79,14 +79,31 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
         child: Flexible(
           child:Column(
           children: <Widget>[
-            AspectRatio(
-              aspectRatio: 0.7,
+            Expanded(
+              flex:10,
               child: Stack(
                 alignment: Alignment.center,
                 children: _getMatchCard(games),
               ),
             ),
-            Text("Beğendiklerinize sağa atarak ulaşabilirsiniz!"),
+              Expanded(
+                  flex:4,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Icon(
+                    Icons.favorite,
+                    color: Colors.red,
+                    size: 100,
+                  ),
+                  Icon(
+                    Icons.file_download,
+                    color: Colors.black,
+                    size: 100,
+                  )
+                ],
+              ),
+            )
           ],
         )),
       ),
@@ -150,7 +167,7 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
               } else {
                 print("right" + x.toString());
                 //saveData(cards[x]);
-                _launchURL(cards[x].url);
+                _launchURL(cards[x].link);
               }
               _removeCard(x);
             },
@@ -229,24 +246,21 @@ class Cards extends StatelessWidget {
       elevation: 12,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.65,
-        height: MediaQuery.of(context).size.width * 1,
+        width: MediaQuery.of(context).size.width * 0.70,
+        height: MediaQuery.of(context).size.height * 0.55,
         child: Expanded(
           child: Column(
             children: <Widget>[
-              Spacer(),
               Image.network(
                 cards[x].url,
-                width: 280,
-                height: 400,
+                width: MediaQuery.of(context).size.width * 0.65,
+                height: MediaQuery.of(context).size.height * 0.45,
                 fit: BoxFit.fill,
               ),
-              Spacer(),
               Text(
                 cards[x].title,
                 style: TextStyle(fontSize: 30),
               ),
-              Spacer(),
             ],
           ),
         ),
