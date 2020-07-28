@@ -1,10 +1,11 @@
-import 'package:OyunAra/routing/router.dart';
+
 import 'package:OyunAra/theme/app_theme.dart';
 import 'package:OyunAra/bottom_navigation/bottom_bar_view.dart';
 import 'package:flutter/material.dart';
 import '../model/homelist.dart';
 import 'package:OyunAra/models/tabIcon_data.dart';
 import '../models/tabIcon_data.dart';
+import 'filters_screen.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key key}) : super(key: key);
@@ -194,7 +195,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     return BottomBarView(
       tabIconsList: tabIconsList,
       addClick: () {
-        return Navigator.pushNamed(context, Routes.FILTER_SCREEN);
+        return Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => FiltersScreen()),
+        );
       },
       changeIndex: (int index) {
         if (index == 0 || index == 2) {
