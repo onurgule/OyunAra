@@ -4,8 +4,11 @@ import 'package:OyunAra/model/game.dart';
 import 'package:OyunAra/model/popular_filter_list.dart';
 import 'package:OyunAra/models/tabIcon_data.dart';
 import 'package:flutter/material.dart';
-import 'model/game.dart';
-import 'theme/app_theme_oyun_ara.dart';
+import '../bottom_navigation/bottom_bar_view.dart';
+
+import '../model/game.dart';
+import '../theme/app_theme_oyun_ara.dart';
+// import 'my_diary_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -204,11 +207,14 @@ class _FitnessAppHomeScreenState extends State<FitnessAppHomeScreen>
     }
     return true;
   }
+<<<<<<< HEAD:lib/oyun_ara_screen.dart
 
   Future<String> getData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString("likes").isEmpty ? null : prefs.getString("likes");
   }
+=======
+>>>>>>> 9f7425c59b0099c2e54bfb45b841657f32156440:lib/screens/oyun_ara_screen.dart
 }
 
 class Cards extends StatelessWidget {

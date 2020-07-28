@@ -1,4 +1,4 @@
-import 'package:OyunAra/oyun_ara_screen.dart';
+import 'package:OyunAra/screens/oyun_ara_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../slider/range_slider_view.dart';

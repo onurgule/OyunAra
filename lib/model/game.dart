@@ -45,5 +45,6 @@ title: $title
 desc: $desc
 url: $url
 types: $types
+gameUrl:$gameUrl
 ''';
 }
