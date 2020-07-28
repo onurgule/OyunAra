@@ -9,7 +9,7 @@ class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case Routes.INITIAL_ROUTE:
-        return MaterialPageRoute(builder: (_) => MyAppHome());
+        return MaterialPageRoute(builder: (_) => IntroScreen());
       case Routes.SPLASH:
         return MaterialPageRoute(builder: (_) => Splash());
       case Routes.ONBOARDING:

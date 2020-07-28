@@ -38,6 +38,7 @@ dependencies:
   shared_preferences: ^0.5.8
   lottie: ^0.4.1
   url_launcher: ^5.5.0
+  google_fonts: ^1.1.0
   
 dev_dependencies:
   flutter_test:
@@ -59,6 +60,7 @@ flutter:
     - images/archero.png
     - images/lol.png
     - images/valorant.png
+    - images/logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

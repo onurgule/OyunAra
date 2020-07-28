@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'package:OyunAra/services/url_generate.dart';
 import 'dart:convert';
 import 'dart:math';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key key}) : super(key: key);
@@ -220,9 +221,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   'Tüm Kategoriler',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 35,
+                                  style: GoogleFonts.lato(
+                                    textStyle:
+                                        Theme.of(context).textTheme.display1,
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w700,
+                                    fontStyle: FontStyle.italic,
                                   ),
                                 ),
                               ),
@@ -269,10 +273,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                               child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'En Beğenilenler',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 35,
+                                  'En Çok Oynananlar',
+                                  style: GoogleFonts.lato(
+                                    textStyle:
+                                        Theme.of(context).textTheme.display1,
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w700,
+                                    fontStyle: FontStyle.italic,
                                   ),
                                 ),
                               ),
@@ -344,10 +351,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 padding: const EdgeInsets.only(top: 4),
                 child: Text(
                   'Oyun Bul',
-                  style: TextStyle(
-                    fontSize: 22,
-                    color: AppTheme.darkText,
-                    fontWeight: FontWeight.w700,
+                  style: GoogleFonts.alegreya(
+                    textStyle: TextStyle(
+                      color: Colors.blue[900],
+                      letterSpacing: .5,
+                      fontSize: 35,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ),
