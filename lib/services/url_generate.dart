@@ -43,4 +43,7 @@ class UrlGenerate {
   String getAllCategories() {
     return "https://oyunara.tk/api/getOptions.php?opt=t";
   }
+  String getCategoryItems(int tid){
+    return "https://oyunara.tk/api/getOptions.php?opt=mr&tid=${tid}";
+  }
 }

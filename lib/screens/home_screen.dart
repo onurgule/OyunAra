@@ -13,6 +13,7 @@ import 'package:OyunAra/services/url_generate.dart';
 import 'dart:convert';
 import 'dart:math';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:OyunAra/screens/category_item.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key key}) : super(key: key);
@@ -81,7 +82,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       throw Exception('Kategori Bulunamadı.');
     }
   }
-   Future<String> fetchAllGames() async {
+
+  Future<String> fetchAllGames() async {
     var response = await http.get(UrlGenerate().getAllGames());
     if (response.statusCode == 200) {
       print("200 döndü");
@@ -140,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       ),
     );
   }
-  
+
   _launchURL(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
@@ -148,16 +150,16 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       throw 'Could not launch $url';
     }
   }
-  Expanded buildExpanded() {
 
+  Expanded buildExpanded() {
     final Animation<double> animation =
-                                    Tween<double>(begin: 0.0, end: 1.0).animate(
-                                  CurvedAnimation(
-                                    parent: animationController,
-                                    curve: Interval((1 / (games.length+1)), 1.0,
-                                        curve: Curves.fastOutSlowIn),
-                                  ),
-                                );
+        Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: animationController,
+        curve: Interval((1 / (games.length + 1)), 1.0,
+            curve: Curves.fastOutSlowIn),
+      ),
+    );
     return Expanded(
       child: FutureBuilder<bool>(
         future: getData(),
@@ -238,24 +240,38 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                             itemCount: categories.length,
                             padding: EdgeInsets.symmetric(vertical: 16.0),
                             itemBuilder: (BuildContext context, int index) {
-                              return Card(
-                                elevation: 15,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      gradient: LinearGradient(colors: [
-                                    colorRandom(),
-                                    colorRandom()
-                                  ])),
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.60,
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    categories[index].name.toUpperCase(),
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 30,
+                              return GestureDetector(
+                                onTap: () {
+                                  //Navigator.pop(context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CategoryDetail(
+                                            tid: int.parse(
+                                                categories[index].tID),
+                                            categoryName:
+                                                categories[index].name)),
+                                  );
+                                },
+                                child: Card(
+                                  elevation: 15,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        gradient: LinearGradient(colors: [
+                                      colorRandom(),
+                                      colorRandom()
+                                    ])),
+                                    width: MediaQuery.of(context).size.width *
+                                        0.60,
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      categories[index].name.toUpperCase(),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 30,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -285,43 +301,41 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                               ),
                             )),
                         Expanded(
-                            flex: 9,
-                            child: ListView.builder(
-
+                          flex: 9,
+                          child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: games.length,
                             padding: EdgeInsets.symmetric(vertical: 16.0),
                             itemBuilder: (BuildContext context, int index) {
                               return Card(
-                                elevation: 15,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: RaisedButton(
-                                  onPressed: () =>   _launchURL(games[index].link),
-                                  child: Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: NetworkImage(games[index].url),
-                                      fit: BoxFit.fill,
+                                  elevation: 15,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: RaisedButton(
+                                    onPressed: () =>
+                                        _launchURL(games[index].link),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: NetworkImage(games[index].url),
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                      width: MediaQuery.of(context).size.width *
+                                          0.60,
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        games[index].title,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 30,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.60,
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    games[index].title,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 30,
-                                    ),
-                                  ),
-                                ),
-                                )
-                                  
-                              );
+                                  ));
                             },
                           ),
-                          )
+                        )
                       ],
                     ),
                     alignment: Alignment.center,
