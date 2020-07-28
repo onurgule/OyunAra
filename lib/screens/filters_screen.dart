@@ -1,10 +1,11 @@
-import 'package:OyunAra/oyun_ara_screen.dart';
+import 'package:OyunAra/screens/oyun_ara_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../slider/range_slider_view.dart';
 import '../slider/slider_view.dart';
 import '../theme/app_theme_slider.dart';
 import '../model/popular_filter_list.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FiltersScreen extends StatefulWidget {
   @override
@@ -340,7 +341,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
           padding:
               const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
           child: Text(
-            'Kaç Kişilik',
+            'Kişi Sayısı',
             textAlign: TextAlign.left,
             style: TextStyle(
                 color: Colors.grey,
@@ -461,10 +462,10 @@ class _FiltersScreenState extends State<FiltersScreen> {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            'Kaç Kişilik?',
+            'Kişi Sayısı',
             textAlign: TextAlign.left,
             style: TextStyle(
-                color: Colors.blueAccent,
+                color: Colors.grey,
                 fontSize: MediaQuery.of(context).size.width > 360 ? 18 : 16,
                 fontWeight: FontWeight.normal),
           ),
@@ -522,9 +523,11 @@ class _FiltersScreenState extends State<FiltersScreen> {
               child: Center(
                 child: Text(
                   'Oyun Arama Filtreleri',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 22,
+                  style: GoogleFonts.lato(
+                    textStyle: Theme.of(context).textTheme.display1,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    fontStyle: FontStyle.italic,
                   ),
                 ),
               ),
